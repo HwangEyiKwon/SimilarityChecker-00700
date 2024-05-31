@@ -8,6 +8,7 @@ class SimilarityChecker {
 public:
     int checkCharCount(string str1, string str2) {
         checkIllegalArgument(str1, str2);
+        return 0;
     }
     void checkIllegalArgument(std::string& str1, std::string& str2)
     {
