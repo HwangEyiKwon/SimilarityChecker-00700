@@ -6,10 +6,46 @@ using namespace std;
 
 class SimilarityChecker {
 public:
-    int checkCharCount(string str1, string str2) {
+    static const int MAX_LENGTH_CHECKER_POINT = 60;
+
+    double getLengthCheckPoint(string str1, string str2) {
         checkIllegalArgument(str1, str2);
-        return 0;
+
+        if (IsSameLength(str1, str2)) return MAX_LENGTH_CHECKER_POINT;
+        if (IsDoubleLengthDiff(str1, str2)) return 0;
+
+        return calcSubPoint(str1, str2);
     }
+
+private:
+    double calcSubPoint(std::string& str1, std::string& str2)
+    {
+        double result;
+        double gap;
+        double shortLength;
+        if (str1.size() >= str2.size()) {
+            gap = str1.size() - str2.size();
+            shortLength = str2.size();
+        }
+        else
+        {
+            gap = str2.size() - str1.size();
+            shortLength = str1.size();
+        }
+        result = (1 - (gap / shortLength)) * MAX_LENGTH_CHECKER_POINT;
+        return result;
+    }
+
+    bool IsSameLength(std::string& str1, std::string& str2)
+    {
+        return str1.size() == str2.size();
+    }
+
+    bool IsDoubleLengthDiff(std::string& str1, std::string& str2)
+    {
+        return str1.size() >= str2.size() * 2 || str1.size() * 2 <= str2.size();
+    }
+
     void checkIllegalArgument(std::string& str1, std::string& str2)
     {
         for (const char& ch : str1) {
