@@ -14,11 +14,11 @@ public:
         if (IsSameLength(str1, str2)) return MAX_LENGTH_CHECKER_POINT;
         if (IsDoubleLengthDiff(str1, str2)) return 0;
 
-        return calcSubPoint(str1, str2);
+        return calcPartialPoint(str1, str2);
     }
 
 private:
-    int calcSubPoint(std::string& str1, std::string& str2)
+    int calcPartialPoint(std::string& str1, std::string& str2)
     {
         int result = 0;
         int gap = 0;
