@@ -8,7 +8,7 @@ class SimilarityChecker {
 public:
     static const int MAX_LENGTH_CHECKER_POINT = 60;
 
-    double getLengthCheckPoint(string str1, string str2) {
+    int getLengthCheckPoint(string str1, string str2) {
         checkIllegalArgument(str1, str2);
 
         if (IsSameLength(str1, str2)) return MAX_LENGTH_CHECKER_POINT;
@@ -18,11 +18,12 @@ public:
     }
 
 private:
-    double calcSubPoint(std::string& str1, std::string& str2)
+    int calcSubPoint(std::string& str1, std::string& str2)
     {
-        double result;
-        double gap;
-        double shortLength;
+        int result = 0;
+        int gap = 0;
+        int shortLength = 0;
+
         if (str1.size() >= str2.size()) {
             gap = str1.size() - str2.size();
             shortLength = str2.size();
@@ -32,7 +33,8 @@ private:
             gap = str2.size() - str1.size();
             shortLength = str1.size();
         }
-        result = (1 - (gap / shortLength)) * MAX_LENGTH_CHECKER_POINT;
+
+        result = ((shortLength - gap) * MAX_LENGTH_CHECKER_POINT) / shortLength;
         return result;
     }
 
