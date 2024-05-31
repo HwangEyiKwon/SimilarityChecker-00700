@@ -19,10 +19,10 @@ public:
 };
 
 TEST_F(SimilarityCheckerTestFixture, AssertIllegalArgumentTest) {
-    SimilarityChecker stSimilarirtyChecker;
     assertIllegalArgument("2SCV", "74HDN3");
     assertIllegalArgument("SCV", "74HDN3");
     assertIllegalArgument("2SCV", "HDN");
     assertIllegalArgument("JASLFAJKSDLFJSCV", "HDN");
     assertIllegalArgument("ASD", "JASLFAJKSDLFJSCV");
 }
+
