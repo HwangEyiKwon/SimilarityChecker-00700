@@ -1,13 +1,26 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <algorithm>
 
 using namespace std;
 
 class SimilarityChecker {
 public:
+    static const int MAX_ALPHABET_CHECKER_POINT = 40;
     static const int MAX_LENGTH_CHECKER_POINT = 60;
+  
+    int getAlphabetCheckPoint(string str1, string str2) {
+        checkIllegalArgument(str1, str2);
 
+        int totalCount = getTotalCount(makeUniqueCharList(str1 + str2));
+        int sameCount = getSameCount(makeUniqueCharList(str1), makeUniqueCharList(str2));
+
+        if (totalCount == sameCount) return MAX_ALPHABET_CHECKER_POINT;
+        if (sameCount == 0) return 0;
+        return (MAX_ALPHABET_CHECKER_POINT * sameCount) / totalCount;
+    }
+    
     int getLengthCheckPoint(string str1, string str2) {
         checkIllegalArgument(str1, str2);
 
@@ -16,8 +29,41 @@ public:
 
         return calcPartialPoint(str1, str2);
     }
-
+  
 private:
+    int getSameCount(vector<char> uniqueCharListOfStr1, vector<char> uniqueCharListOfStr2)
+    {
+        int sameCount = 0;
+        for (const char& ch1 : uniqueCharListOfStr1) {
+            for (const char& ch2 : uniqueCharListOfStr2) {
+                if (ch1 == ch2) sameCount++;
+            }
+        }
+        return sameCount;
+    }
+
+    int getTotalCount(vector<char> totalAlphabet)
+    {
+        int totalCount = 0;
+        for (const char& ch1 : totalAlphabet) {
+            totalCount++;
+        }
+        return totalCount;
+    }
+
+    vector<char> makeUniqueCharList(string str) {
+        vector<char> uniqueCharList;
+
+        for (const char& ch : str) {
+            uniqueCharList.push_back(ch);
+        }
+
+        sort(uniqueCharList.begin(), uniqueCharList.end());
+        uniqueCharList.erase(unique(uniqueCharList.begin(), uniqueCharList.end()), uniqueCharList.end());
+
+        return uniqueCharList;
+    }
+  
     int calcPartialPoint(std::string& str1, std::string& str2)
     {
         int result = 0;
