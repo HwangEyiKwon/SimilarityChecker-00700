@@ -8,6 +8,8 @@ using namespace std;
 class SimilarityChecker {
 public:
     static const int MAX_ALPHABET_CHECKER_POINT = 40;
+    static const int MAX_LENGTH_CHECKER_POINT = 60;
+  
     int getAlphabetCheckPoint(string str1, string str2) {
         checkIllegalArgument(str1, str2);
 
@@ -18,7 +20,16 @@ public:
         if (sameCount == 0) return 0;
         return (MAX_ALPHABET_CHECKER_POINT * sameCount) / totalCount;
     }
+    
+    int getLengthCheckPoint(string str1, string str2) {
+        checkIllegalArgument(str1, str2);
 
+        if (IsSameLength(str1, str2)) return MAX_LENGTH_CHECKER_POINT;
+        if (IsDoubleLengthDiff(str1, str2)) return 0;
+
+        return calcPartialPoint(str1, str2);
+    }
+  
 private:
     int getSameCount(vector<char> uniqueCharListOfStr1, vector<char> uniqueCharListOfStr2)
     {
@@ -52,8 +63,38 @@ private:
 
         return uniqueCharList;
     }
+  
+    int calcPartialPoint(std::string& str1, std::string& str2)
+    {
+        int result = 0;
+        int gap = 0;
+        int shortLength = 0;
 
-    void checkIllegalArgument(string& str1, string& str2)
+        if (str1.size() >= str2.size()) {
+            gap = str1.size() - str2.size();
+            shortLength = str2.size();
+        }
+        else
+        {
+            gap = str2.size() - str1.size();
+            shortLength = str1.size();
+        }
+
+        result = ((shortLength - gap) * MAX_LENGTH_CHECKER_POINT) / shortLength;
+        return result;
+    }
+
+    bool IsSameLength(std::string& str1, std::string& str2)
+    {
+        return str1.size() == str2.size();
+    }
+
+    bool IsDoubleLengthDiff(std::string& str1, std::string& str2)
+    {
+        return str1.size() >= str2.size() * 2 || str1.size() * 2 <= str2.size();
+    }
+
+    void checkIllegalArgument(std::string& str1, std::string& str2)
     {
         for (const char& ch : str1) {
             if (ch < 'A' || ch > 'Z') throw invalid_argument("Input Only A~Z!!!");
